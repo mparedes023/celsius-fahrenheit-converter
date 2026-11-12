@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, SafeAreaView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import {StyleSheet, ImageBackground,Text, View, TextInput, TouchableOpacity, SafeAreaView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './redux/store';
-import { setCelsiusInput, convertToFahrenheit } from './redux/temperatureSlice';
-
+import {setCelsiusInput, convertToFahrenheit } from './redux/temperatureSlice';
+import {useFonts } from 'expo-font';
+import {ActivityIndicator } from 'react-native';
 const TemperatureConverterApp = () => {
   const dispatch = useDispatch();
   
@@ -21,9 +22,14 @@ const TemperatureConverterApp = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+      <ImageBackground
+        source={require('./assets/fridge.jpg')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
         <View style={styles.card}>
-          <Text style={styles.header}>°C to °F Converter</Text>
-          
+          <Text style={styles.header}>Chef Kitty needs help!</Text>
+          <Text style={styles.description}>Be her sous-chef and help her convert celsius to fahrenheit for her recipes.</Text>
           <Text style={styles.label}>Enter Temperature in Celsius:</Text>
           <TextInput
             style={styles.input}
@@ -57,12 +63,20 @@ const TemperatureConverterApp = () => {
             
           ) : null}
         </View>
+        </ImageBackground>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
 
 const App = () => {
+  const [fontsLoaded] = useFonts({
+    Fredoka: require('./assets/fonts/angelica.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return <ActivityIndicator />;
+  }
   return (
     <Provider store={store}>
       <TemperatureConverterApp />
@@ -73,34 +87,47 @@ const App = () => {
 
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
 
-
     backgroundColor: '#f5f7fb',
+  },
+  backgroundImage:{
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingBottom: 50,
   },
   card: {
     width: '90%',
-    backgroundColor: '#c8effb',
-
-    padding: 24,
-
+    backgroundColor: '#ff9cbb',
+    borderRadius:10,
+    padding: 20,
+    elevation:10,
 
   },
+  description:{
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4a5568',
+    letterSpacing:2,
+    marginBottom:20,
+  },
   header: {
-    fontSize: 24,
+    fontSize: 45,
     fontWeight: 'bold',
-    color: '#1a202c',
-    textAlign: 'center',
-    marginBottom: 24,
+    color: '#0b0b0b',
+    textAlign: 'left',
+    fontFamily: 'Fredoka',
+    letterSpacing:5,
+    textTransform:'uppercase',
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
     color: '#4a5568',
-
     marginBottom: 8,
   },
   input: {
@@ -122,7 +149,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   button: {
-    backgroundColor: '#3b82f6',
+    backgroundColor: '#000000',
     
     paddingVertical: 14,
     alignItems: 'center',
@@ -130,7 +157,8 @@ const styles = StyleSheet.create({
 
   },
   buttonText: {
-    color: '#ffffff',
+
+    color: '#e3a5bd',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -144,7 +172,7 @@ const styles = StyleSheet.create({
   },
   resultLabel: {
     fontSize: 14,
-    color: '#64748b',
+    color: '#053100',
 
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -156,7 +184,7 @@ const styles = StyleSheet.create({
 
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#00154e',
+    color: '#0e3d00',
   },
 });
 
